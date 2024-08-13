@@ -1314,19 +1314,6 @@ export async function process_swaps_modal(input) {
   }
 }
 
-function findNthOccurrence(str, char, n) {
-  let count = 0;
-  for (let i = 0; i < str.length; i++) {
-      if (str[i] === char) {
-          count++;
-          if (count === n) {
-              return i;
-          }
-      }
-  }
-  return -1;
-}
-
 export async function send_output(input) {
   try {
     //unpack input
@@ -1340,12 +1327,7 @@ export async function send_output(input) {
     if (input.mentions) {
       mentions = input.mentions;
     }
-    var at_ten = findNthOccurrence(message, '@', 10);
-    var newline_after_at_ten = -1;
-    if (at_ten != -1) {
-      newline_after_at_ten = message.indexOf('\n', at_ten);
-    }
-    if (message.length < 2000 && newline_after_at_ten === -1) {
+    if (message.length < 2000) {
       if (edit_url) {
         let res = await axios.patch(edit_url, {content: message, allowed_mentions: {parse: mentions}});
         return;
@@ -1366,14 +1348,11 @@ export async function send_output(input) {
     //cut input at first newline before 2000th character, repeat until length > 2000, send first as a patch and remaining as new message
     var message_array = [];
     var i = 0;
-    while (message.length > 2000 || newline_after_at_ten > 0) {
-      let cut_at = (newline_after_at_ten < 2000) ? newline_after_at_ten:2000;
-      let test_str = message.substr(0, cut_at);
+    while (message.length > 2000) {
+      let test_str = message.substr(0, 2000);
       let index = test_str.lastIndexOf('\n');
       message_array[i] = test_str.substr(0, index);
       message = message.substr(index);
-      var at_ten = findNthOccurrence(message, '@', 10);
-      var newline_after_at_ten = message.indexOf('\n', at_ten);
       i++;
     }
     message_array[i] = message;
