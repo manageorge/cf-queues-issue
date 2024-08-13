@@ -1,0 +1,22 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "toby-dev-browser"
+main = "src/index.ts"
+compatibility_date = "2024-07-29"
+compatibility_flags = ["nodejs_compat"]
+
+# Bind a headless browser instance running on Cloudflare's global network.
+# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#browser-rendering
+[browser]
+binding = "MYBROWSER"
+
+[[queues.consumers]]
+queue = "toby-dev-browser-queue"
+max_batch_size = 1
+max_batch_timeout = 1
+max_concurrency = 2
+max_retries = 0
+
+[[d1_databases]]
+binding = 'DB'
+database_name = 'toby_dev_database'
+database_id = '<REMOVED>'
