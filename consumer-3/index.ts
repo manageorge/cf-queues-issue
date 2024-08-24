@@ -352,7 +352,7 @@ export default {
 	      	//login process
 	      	await page.goto('https://www.moxfield.com/account/signin');
 	      	await page.type('#username', 'TOBot');
-	      	await page.type('#password', `BotGeorge'sSuperSecurePassword`);
+	      	await page.type('#password', env.MFPW);
 	      	await page.keyboard.press('Enter');
 	      	//await new Promise(r => setTimeout(r, 2000));
 	      	await page.waitForNavigation();
