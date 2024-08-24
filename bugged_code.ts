@@ -1,10 +1,22 @@
-export async function nthIndex(str, pat, n){
+export async function nthIndex(str, char, n){
+  let count = 0;
+  for (let i = 0; i < str.length; i++) {
+      if (str[i] === char) {
+          count++;
+          if (count === n) {
+              return i;
+          }
+      }
+  }
+  return -1;
+  /* newer, more efficient version (also hangs)
   var L= str.length, i= -1;
   while(n-- && i++<L){
-    i= str.indexOf(pat, i);
+    i= str.indexOf(char, i);
     if (i < 0) break;
   }
   return i;
+  */
 }
 
 export async function send_output(input) {
